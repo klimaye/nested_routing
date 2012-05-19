@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @pharmacy.name %>
+</p>
+
+<p>
+  <b>Company:</b>
+  <%= @pharmacy.company_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_pharmacy_path(@pharmacy) %> |
+<%= link_to 'Back', pharmacies_path %>
