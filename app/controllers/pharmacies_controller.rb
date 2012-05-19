@@ -1,83 +1,62 @@
 class PharmaciesController < ApplicationController
+  before_filter :get_company
   # GET /pharmacies
   # GET /pharmacies.json
   def index
-    @pharmacies = Pharmacy.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @pharmacies }
-    end
+    @pharmacies = @company.pharmacies.all
   end
 
   # GET /pharmacies/1
   # GET /pharmacies/1.json
   def show
-    @pharmacy = Pharmacy.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @pharmacy }
-    end
+    @pharmacy = @company.pharmacies.find(params[:id])
   end
 
   # GET /pharmacies/new
   # GET /pharmacies/new.json
   def new
-    @pharmacy = Pharmacy.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @pharmacy }
-    end
+    @pharmacy = @company.pharmacies.build
   end
 
   # GET /pharmacies/1/edit
   def edit
-    @pharmacy = Pharmacy.find(params[:id])
+    @pharmacy = @company.pharmacies.find(params[:id])
   end
 
   # POST /pharmacies
   # POST /pharmacies.json
   def create
-    @pharmacy = Pharmacy.new(params[:pharmacy])
-
-    respond_to do |format|
-      if @pharmacy.save
-        format.html { redirect_to @pharmacy, notice: 'Pharmacy was successfully created.' }
-        format.json { render json: @pharmacy, status: :created, location: @pharmacy }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @pharmacy.errors, status: :unprocessable_entity }
-      end
+    @pharmacy = @company.pharmacies.build(params[:pharmacy])
+    if @pharmacy.save
+      redirect_to(company_pharmacies_url(@company), :notice => 'Pharmacy was successfully created.')
+    else
+      render :action => "new"
     end
   end
 
   # PUT /pharmacies/1
   # PUT /pharmacies/1.json
   def update
-    @pharmacy = Pharmacy.find(params[:id])
-
-    respond_to do |format|
-      if @pharmacy.update_attributes(params[:pharmacy])
-        format.html { redirect_to @pharmacy, notice: 'Pharmacy was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @pharmacy.errors, status: :unprocessable_entity }
-      end
+    @pharmacy = @company.pharmacies.find(params[:id])
+    if @pharmacy.update_attributes(params[:pharmacy])
+      redirect_to(company_pharmacies_url(@company), :notice => 'Pharmacy was successfully updated.')
+    else
+      render :action => "edit"
     end
   end
 
   # DELETE /pharmacies/1
   # DELETE /pharmacies/1.json
   def destroy
-    @pharmacy = Pharmacy.find(params[:id])
+    @pharmacy = @company.pharmacies.find(params[:id])
     @pharmacy.destroy
-
-    respond_to do |format|
-      format.html { redirect_to pharmacies_url }
-      format.json { head :no_content }
-    end
+    redirect_to(company_pharmacies_url(@company))
+  end
+  
+ protected
+  
+  def get_company
+    @company = Company.find_by_id(params[:company_id])
+    redirect_to root_path unless @company
   end
 end

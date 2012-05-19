@@ -13,13 +13,13 @@
   <tr>
     <td><%= pharmacy.name %></td>
     <td><%= pharmacy.company_id %></td>
-    <td><%= link_to 'Show', pharmacy %></td>
-    <td><%= link_to 'Edit', edit_pharmacy_path(pharmacy) %></td>
-    <td><%= link_to 'Destroy', pharmacy, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to 'Show', company_pharmacy_path(@company, pharmacy) %></td>
+    <td><%= link_to 'Edit', edit_company_pharmacy_path(@company, pharmacy) %></td>
+    <td><%= link_to 'Destroy', "/companies/#{params[:company_id]}/pharmacies/#{pharmacy.id}", confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Pharmacy', new_pharmacy_path %>
+<%= link_to 'New Pharmacy', new_company_pharmacy_path(@company) %>
